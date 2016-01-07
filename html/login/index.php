@@ -119,7 +119,7 @@
 
             $.post("./login.php", {email: e.value, password: pw.value}, function(data){
                 
-                if(data !== "failure")
+                if(data != false)
                 {
 
                     err.innerHTML = "Login successful";
@@ -152,13 +152,17 @@
                     
                     $.post("./adduser.php", {email: e.value, password: pw.value}, function(data)
                         {     
-                            err.innerHTML = data;
+                            if(data == true)
+                            {
+                                err.innerHTML = "Registration Successful";
+                            }
+                            
                             $.post("./login.php", {email: e.value, password: pw.value}, function(data)
                             {
-                                if(data !== "failure")
+                                if(data != false)
                                 {
 
-                                    //err.innerHTML = "Login successful";
+                                    err.innerHTML = "Login successful";
                                     setCookie("token", data, 7);
                                     window.location = "/";
                                 }

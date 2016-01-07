@@ -1,17 +1,12 @@
 <?php
-    include_once("/var/www/php/sql_connect.php");
+    include_once("/var/www/web_classes/DUser.php");
 
     $email = $_POST["email"];
 	$password = $_POST["password"];
 	
 	sleep(1);
-	$return = getLoginToken($email, $password);
-    if($return === false)
-    {
-    	echo "failure";
-    }
-    else
-    {
-    	echo $return;
-    }
+	
+    $user = new DUser(NULL);
+    echo $user->Login($email, $password);
+    
 ?>
