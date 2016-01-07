@@ -1,5 +1,5 @@
 <?php
-	include("DBFunctions.php");
+	include("DUser.php");
 
 	class DHunter extends DUser	{
 		private 	$fname;
@@ -45,27 +45,32 @@
 
 		public function HID()
 		{
-
+			return $this->hunterID;
 		}
+
 		public function Avatar()
 		{
-
+			return $this->pictureDir;
 		}
+
 		public function Quarry()
 		{
-
+			return $this->assignedQuarry;
 		}
+
 		public function Timestamp()
 		{
-
+			return $this->since;
 		}
+
 		public function Points()
 		{
-
+			return $this->points;
 		}
+
 		public function Elimby()
 		{
-
+			return $this->eliminatedP;
 		}
 			
 

@@ -12,7 +12,7 @@
 		echo $user->CreateNew($email, $password);
 	}
 	catch(Exception $e){
-		echo $e->getMessage();
+		echo "Exception caught: " . $e->getMessage();
 	}
 	
 
