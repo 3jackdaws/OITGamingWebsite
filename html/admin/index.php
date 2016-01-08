@@ -3,6 +3,7 @@
     $token = $_COOKIE["token"];
    
     $user = new DUser($token);
+    error_log($user->Email());
 
    
 ?>
@@ -80,9 +81,9 @@
         <h4><center>
     <?php
         
-if($user->Perms !== 1)
+if($user->Perms() !== 1)
 {
-	if($user->Perms === 0)
+	if($user->Perms() === 0)
 	{
 		echo "<p style='color:red'>Invalid login token</p>";
 	}
@@ -103,7 +104,7 @@ if($user->Perms !== 1)
     <?php
         	
 }   //ending if bracket
-else if($user->Perms === 1) 
+else if($user->Perms() === 1) 
 {
     if(isset($_FILES["gotwimg"]))
     {

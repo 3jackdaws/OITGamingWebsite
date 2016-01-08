@@ -1,3 +1,10 @@
+<?php
+if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
+    $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    header("HTTP/1.1 301 Moved Permanently");
+    header("Location: $redirect");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -38,6 +45,9 @@
         $gotwarray = explode(";", fread($gotw, filesize("./assets/gotw/topc.txt")));
         fclose($gotw);
 
+        $atext = fopen("./assets/announcements/warn.txt", "r");
+        $announcement = fread($atext, filesize("./assets/announcements/warn.txt"));
+
         $pValue = $gotwarray[2]/$gotwarray[3]*100;
         if($pValue == 100)
         {
@@ -60,6 +70,7 @@
         else
         {
             $pbar_text = "\$$gotwarray[2] of \$$gotwarray[3] funded";
+            $pbar_color = " ";
         } 
     ?>
 
@@ -76,8 +87,7 @@
     
     </script>
     <div id="announce" class="container-fluid paper-blue" style="color: white; font-size: 1.5em; text-align: center;">
-            
-            
+            <?=$announcement?>
     </div>
     <br />
     <div class="container">
@@ -267,7 +277,7 @@
             <div class="col-lg-6">
                 <h4>
                     <center>
-                        <a href="http://steamcommunity.com/groups/OITGC" target="_blank">Join our Steam group</a>
+                        <a href="https://steamcommunity.com/groups/OITGC" target="_blank">Join our Steam group</a>
                     </center>
                 </h4>
             </div>
@@ -277,14 +287,9 @@
 
     <hr class="featurette-divider" >
     <footer style="margin: 10px 10px 10px 10px;">
-        <p class="pull-right" >
-            <a href="/admin">Administration</a> &nbsp; &middot; &nbsp;
-            <a href="/assets/OITGCConstitution.pdf">View OITGC Constitution</a> &nbsp; &middot; &nbsp;
-            <a href="#">Back to top</a>
-        </p>
-        <p>
-            &copy; 2015 Oregon Tech Gaming Community <img src=""/>
-        </p>
+        <?php
+            include("/var/www/snippets/standard_footer.php");
+        ?>
     </footer>
         
         
@@ -300,12 +305,12 @@
     <script>
         $(document).ready(function()
         {
-            $.post("labs/members.php", {swag: "hi"}, function(data)
+            $.post("/assets/php/members.php", {swag: "hi"}, function(data)
                 {
                     document.getElementById("memberlist").innerHTML = data;
                 });
             
-            $("#announce").load("/assets/announcements/warn.txt");
+            
                             
    
             if( $(window).width()> 1000)
