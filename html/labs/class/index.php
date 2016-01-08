@@ -1,5 +1,6 @@
 <?php
-    include("/var/www/web_classes/DHunter.php");
+    
+    include("/var/www/web_classes/eventcontrol.php");
     $token = $_COOKIE["token"];
     $db = new OITDatabase;
     //var_dump($db->db_connection);
@@ -10,13 +11,20 @@
     echo "<br><br><br>";
     echo "<br><br><br>";
 
-    $user = new DUser($token);
+    
     
     //echo $user->Email() . " " . $user->Perms();
+    $user = new DUser($token);
 
+   
 
-    $hunter = new DHunter($token);
-    var_dump($hunter);
+    $Eventcontol = new EventControlModule($user);
+    $Eventcontol->user = $user;
+
+    var_dump($user);
+    echo "<br><br>";
+
+    var_dump($Eventcontol);
 
 
 ?>

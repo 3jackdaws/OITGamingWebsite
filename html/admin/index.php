@@ -1,9 +1,8 @@
 <?php
-    include_once("/var/www/php/sql_connect.php");
+    include_once("/var/www/web_classes/DUser.php");
     $token = $_COOKIE["token"];
    
-    $perms = -1;
-    $perms = getUserPermissions($token);
+    $user = new DUser($token);
 
    
 ?>
@@ -81,9 +80,9 @@
         <h4><center>
     <?php
         
-if($perms !== 1)
+if($user->Perms !== 1)
 {
-	if($perms === 0)
+	if($user->Perms === 0)
 	{
 		echo "<p style='color:red'>Invalid login token</p>";
 	}
@@ -104,7 +103,7 @@ if($perms !== 1)
     <?php
         	
 }   //ending if bracket
-else if($perms == 1) 
+else if($user->Perms === 1) 
 {
     if(isset($_FILES["gotwimg"]))
     {
