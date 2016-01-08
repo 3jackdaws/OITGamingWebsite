@@ -22,9 +22,9 @@
 			}
 			else
 			{
-				$authorized = false;
+				$this->authorized = false;
 			}
-			return $authorized;
+			return $this->authorized;
 		}
 
 		public function SetQuarriesNull()

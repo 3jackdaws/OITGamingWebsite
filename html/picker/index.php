@@ -176,12 +176,9 @@
           </div>
         <hr class="featurette-divider" >
     <footer style="margin: 10px 10px 10px 10px;">
-        <p class="pull-right" >
-            <a href="#" onclick="redo()">Redo</a>
-        </p>
-        <p>
-            &copy; 2015 Oregon Tech Gaming Community <img src=""/>
-        </p>
+        <?php
+            include("/var/www/snippets/standard_footer.php");
+        ?>
     </footer>
 
         
