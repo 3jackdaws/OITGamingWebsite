@@ -1,5 +1,5 @@
 <?php
-	include("OITDatabase.php");
+	include_once("OITDatabase.php");
 
 	class DUser	{
 		protected   	$id;
