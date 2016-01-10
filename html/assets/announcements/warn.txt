@@ -1,1 +1,0 @@
-<h1><button class="btn btn-primary btn-lg">NEW MOTD</button>
