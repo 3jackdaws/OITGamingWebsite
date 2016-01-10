@@ -1,0 +1,32 @@
+Changelog and TODO
+
+
+
+December 20, 2015	-	
+
+Refactored essential code into functions and buried the function file underneath the root web directory.  Files still post to login.php, adduser.php, etc., but those files just format the post requests and call the interaction functions.
+
+
+
+December 20, 2015 	-	
+
+Fixed login tokens not working on chrome based browsers.  Turns out Chrome accepts a different method of setting the path for cookies.
+Just tested, it does still work on Safari.  Also, works on Android Chrome now.  Yay!
+
+Added Steam group members to the the homepage at oitgaming.com.
+Script is AJAX'd every time and is very costly (must request xml for
+group, then every user in the group and parse that info), but is
+located at the bottom of the page so is hardly noticeable.  
+
+//TODO 
+Run the group update script every 30 or so minutes and have it write to a text file.  AJAX that text file on page load.
+
+
+December 19, 2015
+
+Accounts were added.  There's no real use for them, but they exist.  Database is
+mySQL and most things are handled with PHP.  Everything is parameterized.
+Passwords are hashed and stored.  Login tokens are separate, similar complexity
+hashes.  Login tokens are renewed every time a user logs in and natural expiry
+happens after 7 days.
+
