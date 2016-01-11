@@ -15,6 +15,7 @@
 		{
 			Duser::__construct($token);
 			$this->getHunterInfo();
+			
 
 		}
 
@@ -60,7 +61,9 @@
 
 		public function Timestamp()
 		{
-			return $this->since;
+			$timestamp = strtotime($this->since);
+			
+			return date("Y-m-d H:i:s", $timestamp);
 		}
 
 		public function Points()
@@ -70,11 +73,81 @@
 
 		public function Elimby()
 		{
-			return $this->eliminatedP;
+			return $this->eliminated;
 		}
 			
+		public function requestNewQuarry()
+		{
+			$since = time() - strtotime($this->since);
+			
+			if($this->since/3600 > 24)
+			{
+				getQuarry();
+				pushQuarry();
+			}
+		}
 
+		public function getQuarry()
+		{
+			$this->db->SQLPrepare("SELECT hunterID FROM hunters;");
+			$hids = $this->db->SQLGetResult();
+			$this->db->SQLPrepare("SELECT DISTINCT assignedQuarry FROM hunters;");
+			$takenQuarries = $this->db->SQLGetResult();
+			$uniqueQuarries = array_diff($hids, $takenQuarries);
+			
+			shuffle($uniqueQuarries);
+			$newQ = array_pop($uniqueQuarries);
+			while($uniqueQuarries and ($newQ === $this->assignedQuarry or $newQ === $this->hunterID))
+			{
+				$newQ = array_pop($uniqueQuarries);
+			}
+			if($newQ !== $this->assignedQuarry or $newQ !== $this->hunterID)
+			{
+				$this->assignedQuarry = $newQ;
+			}
+			else
+			{
+				shuffle($hids);
+				while($newQ === $this->assignedQuarry or $newQ === $this->hunterID)
+				{
+					$newQ = array_pop($hids);
+				}
+				$this->assignedQuarry = $newQ;
+			}
+			return true;
+		}
 
+		private function pushQuarry()
+		{
+			try{
+				$this->db->SQLPrepare("UPDATE users SET assignedQuarry = ? WHERE hunterID = ?");
+				$args = array($this->assignedQuarry, $this->hunterID);
+				$this->db->SQLBind("ss", $args);
+				$this->db->SQLGetResult();
+			}
+			catch(Exception $e){
+				error_log($e);
+				return false;
+			}
+			return true;
+		}
+
+		public function ChangeAvatar($web_dir)
+		{
+			try{
+				$this->db->SQLPrepare("UPDATE hunters SET pictureDir = ? WHERE hunterID = ?");
+				$args = array($web_dir, $this->hunterID);
+				$this->db->SQLBind("ss", $args);
+				$this->db->SQLGetResult();
+			}
+			catch(Exception $e){
+				error_log($e);
+				return "Error Setting Picture";
+			}
+			unlink("/var/www/sites/labs" . $this->pictureDir);
+			$this->pictureDir = $web_dir;
+			return "Picture Successfully Updated";
+		}
 	}
 
 	
