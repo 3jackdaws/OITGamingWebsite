@@ -1,7 +1,9 @@
 <?php
 	$token = $_POST["token"];
 	$argline = $_POST["args"];
+	include_once("/var/www/web_classes/eventcontrol.php");
 	//echo $argline;
+	$control = new EventControlModule();
 	if(explode(" ", $argline))
 	{
 		$args = explode(" ", $argline);
@@ -36,7 +38,7 @@
 							}
 							case "1":
 							{
-								echo setRoundToOne();
+								var_dump(setRoundToOne());
 							}
 						}
 						break;

@@ -1,5 +1,6 @@
 <?php
 	include("DUser.php");
+	
 
 	class DHunter extends DUser	{
 		private 	$fname;
@@ -15,7 +16,7 @@
 		{
 			Duser::__construct($token);
 			$this->getHunterInfo();
-			
+			date_default_timezone_set('America/Los_Angeles');
 
 		}
 
@@ -78,49 +79,48 @@
 			
 		public function requestNewQuarry()
 		{
-			$since = time() - strtotime($this->since);
-			
-			if($this->since/3600 > 24)
+
+			if($this->assignedQuarry != NULL)
 			{
-				getQuarry();
-				pushQuarry();
+				$since = time() - strtotime($this->since);
+				
+				
+				if($since/3600 > 24)
+				{
+					$this->getQuarry();
+					$this->pushQuarry();
+					return true;
+				}
+				else
+				{
+					
+					return round($since/3600);
+				}
 			}
+			else
+			{
+				return "The event has not yet started.";
+			}
+			
 		}
 
 		public function getQuarry()
 		{
-			$this->db->SQLPrepare("SELECT hunterID FROM hunters;");
-			$hids = $this->db->SQLGetResult();
-			$this->db->SQLPrepare("SELECT DISTINCT assignedQuarry FROM hunters;");
-			$takenQuarries = $this->db->SQLGetResult();
-			$uniqueQuarries = array_diff($hids, $takenQuarries);
-			
-			shuffle($uniqueQuarries);
-			$newQ = array_pop($uniqueQuarries);
-			while($uniqueQuarries and ($newQ === $this->assignedQuarry or $newQ === $this->hunterID))
-			{
-				$newQ = array_pop($uniqueQuarries);
-			}
-			if($newQ !== $this->assignedQuarry or $newQ !== $this->hunterID)
-			{
-				$this->assignedQuarry = $newQ;
-			}
-			else
-			{
-				shuffle($hids);
-				while($newQ === $this->assignedQuarry or $newQ === $this->hunterID)
-				{
-					$newQ = array_pop($hids);
-				}
-				$this->assignedQuarry = $newQ;
-			}
+			$hids = $this->db->SQLFetchAll("hunterID", "hunters");
+			$i = 0;
+			shuffle($hids);
+			do{
+				$newQ = $hids[$i];
+				$i++;
+			}while($newQ == $this->assignedQuarry or $newQ == $this->hunterID);
+			$this->assignedQuarry = $newQ;
 			return true;
 		}
 
-		private function pushQuarry()
+		public function pushQuarry()
 		{
 			try{
-				$this->db->SQLPrepare("UPDATE users SET assignedQuarry = ? WHERE hunterID = ?");
+				$this->db->SQLPrepare("UPDATE hunters SET assignedQuarry = ? WHERE hunterID = ?;");
 				$args = array($this->assignedQuarry, $this->hunterID);
 				$this->db->SQLBind("ss", $args);
 				$this->db->SQLGetResult();
@@ -135,7 +135,7 @@
 		public function ChangeAvatar($web_dir)
 		{
 			try{
-				$this->db->SQLPrepare("UPDATE hunters SET pictureDir = ? WHERE hunterID = ?");
+				$this->db->SQLPrepare("UPDATE hunters SET pictureDir = ? WHERE hunterID = ?;");
 				$args = array($web_dir, $this->hunterID);
 				$this->db->SQLBind("ss", $args);
 				$this->db->SQLGetResult();
@@ -144,10 +144,29 @@
 				error_log($e);
 				return "Error Setting Picture";
 			}
-			unlink("/var/www/sites/labs" . $this->pictureDir);
+			unlink("/var/www/sites/oitgaming" . $this->pictureDir);
 			$this->pictureDir = $web_dir;
 			return "Picture Successfully Updated";
 		}
+
+		public function IncrementPoints()
+		{
+			try{
+				$this->db->SQLPrepare("UPDATE hunters SET points = points + 1 WHERE hunterID = ?;");
+				$args = array($this->hunterID);
+				$this->db->SQLBind("s", $args);
+				$this->db->SQLGetResult();
+			}
+			catch(Exception $e){
+				error_log($e);
+				return "Error Incrementing Points";
+			}
+		}
+
+
+		/*----------------HELPER FUNCTIONS-------------*/
+
+
 	}
 
 	

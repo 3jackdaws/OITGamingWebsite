@@ -1,0 +1,7 @@
+php/**
+.*
+!/.gitignore
+confidential/**
+isogen/**
+labs/**
+nbproject/**

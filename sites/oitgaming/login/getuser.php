@@ -3,10 +3,5 @@
 
     $token = $_POST["token"];
 
-    if($token[0] === "$")
-    {
-    	echo getEmailFromToken($token);
-    }
-
-	
+	echo getEmailFromToken($token);
 ?>

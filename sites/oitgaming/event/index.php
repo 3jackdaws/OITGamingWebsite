@@ -32,25 +32,26 @@
     {
         $token = $_COOKIE["token"];
     }
-
+    include("/var/www/web_classes/DHunter.php");
+    $hunter = new DHunter($token);
+    $quarry = $hunter->Quarry();
 
 
 
     if(isset($_FILES["hpic"]))
     {
         
-        $tmpdir = tempnam("/var/www/html/uploads", "img_");
+        $tmpdir = tempnam("/var/www/sites/oitgaming/uploads", "img_");
         // unlink($tmpdir);
         $tmpdir = $tmpdir;
-        $path = explode("html", $tmpdir);
+        $path = explode("oitgaming", $tmpdir);
         if($_FILES["hpic"]["type"] === "image/jpeg" and $_FILES["hpic"]["size"] < 10*1024*1024)
         {
             if(move_uploaded_file($_FILES["hpic"]["tmp_name"], $tmpdir))
             {
                 fixOrientation($tmpdir);
-                $uid = getUserIDFromToken($token);
             
-                $img_text = updateEventPicture($uid, $path[1]);
+                $img_text = $hunter->ChangeAvatar($path[1]);
             }
         }
         else 
@@ -183,8 +184,8 @@
                     <li><a href="mailto:gaming@oit.edu">Contact</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li id="ddown" class="dropdown">
-                        <a id="ddown" href="/login" ><span id="c_th"> <span id="l_id">Log in</span> <span class="glyphicon glyphicon-log-in"></span></span></a>
+                    <li>
+                        <a href="leaderboard" >Leaderboard and Log</a>
                     </li>
                 </ul>
             </div>
@@ -199,13 +200,12 @@
 
     <?php
 
-    if($token[0] === "$")
+    if($hunter->Email() != NULL)
     {
-        $uid = getUserIDFromToken($token);
-        $result = getHunterStats($uid);
-        if(isset($result[5]))
+        
+        if(isset($quarry))
         {
-            $quarry = getQuarryStats($result[5]);
+            $quarry = getQuarryStats($quarry);
         }
         else
         {
@@ -213,7 +213,7 @@
             $quarry[4] = "/uploads/null.jpg";
 
         }
-        if($result[8])
+        if($hunter->ElimBy() != NULL)
         {
             $elimBy = getQuarryStats($result[8]);
             $elimBy = $elimBy[2];
@@ -224,7 +224,7 @@
             $elimBy = "Not yet eliminated.";
         }
     
-        if(!isset($result))
+        if($hunter->HID() == NULL)
         {
             echo "<center><button class='btn btn-default btn-lg' onclick='addUserToEvent()'>Participate in the Event</button>";
         }
@@ -241,7 +241,7 @@
                             <h3><center>You:</h3>
                                 <div class="jumbotron-vert" style="">
                                     <center>
-                                        <div style="max-height: 80vw; height: 400px; width: 100%; overflow: hidden; background: url('<?=$result[4]?>') no-repeat; background-size: cover; background-position: center center">
+                                        <div style="max-height: 80vw; height: 400px; width: 100%; overflow: hidden; background: url('<?=$hunter->Avatar()?>') no-repeat; background-size: cover; background-position: center center">
                                             
                                         </div>
                                         
@@ -268,14 +268,14 @@
                                             <div class="row flex">
                                                 <div style="float: left; text-align: center; min-width: 50%">
                                                     <div class="left">Name:</div>
-                                                    <div class="right"><h3 style="margin:0"><?=$result[2]?></div>
+                                                    <div class="right"><h3 style="margin:0"><?=$hunter->FirstName()?></div>
                                                     <br>
                                                     <div class="left">Player ID:</div>
-                                                    <div class="right"><?=$result[3]?></div>
+                                                    <div class="right"><?=$hunter->HID()?></div>
                                                 </div>
                                                 <div style="float: right; ">
                                                     <div class="left">Current Score:</div>
-                                                    <div class="right"><h1 style="margin: 0;"><?=$result[7]?></h1></div>
+                                                    <div class="right"><h1 style="margin: 0;"><?=$hunter->Points()?></h1></div>
                                                     points
                                                 </div>  
                                                 
@@ -342,7 +342,7 @@
                                         </div>
                                     </div>
                                     <br><br><br>
-                                    <button id="bFlip" class="btn btn-default">REDEEM</button>
+                                    <button id="bFlip" class="btn btn-default">FLIP CARD</button>
                                     
                                 </div>
 
@@ -363,7 +363,7 @@
     ?>
     </div>
     
-    <div id="err" style="color:red">
+    <div id="err" style="color:red; text-align: center; font-size: 3em">
     </div>
     <!-- END JUMBOTRON AND SIGNUP FORM -->
             
@@ -372,15 +372,9 @@
 
     <hr class="featurette-divider" >
     <footer id="footer" style="margin: 10px 10px 10px 10px;">
-        <p class="pull-right" >
-            <a href="#footer" id="newQuarry">Request new Quarry</a> &middot; 
-            <a href="mailto:ian.murphy@oit.edu">Report a Problem</a>
-            
-        </p>
-
-        <p>
-            &copy; 2015 Oregon Tech Gaming Community <img src=""/>
-        </p>
+    <?php
+        include("/var/www/snippets/event_footer.php");
+    ?>
     </footer>
         
         
@@ -400,20 +394,26 @@
         $('#newQuarry').click(function(){
             if(confirm("You are about to request a new quarry.  Click OK to continue."))
             {
-                alert("here");
-            }
-            $.post("getNewQuarry.php", {token: "<?=$token?>", quarry: "NEW"}, function(data)
+                $.post("getNewQuarry.php", {token: "<?=$token?>", quarry: "NEW"}, function(data)
                 {
 
-                    document.getElementById("qErr").innerHTML = data;
-                    if(data === "Contract Redeemed")
+
+                    if(data === "TRUE")
                     {
                         setTimeout(function(){$("#quarry").toggleClass('flipped');}, 700);
 
                         setTimeout(function(){window.location = "/event";}, 1000);
-                        
+                    }
+                    else if(data[0] === "T")
+                    {
+                        document.getElementById("err").innerHTML = data;
+                    }
+                    else{
+                        document.getElementById("err").innerHTML = "You must wait " + data + " more hours before requesting a new quarry";
                     }
                 });
+            }
+            
         });
 
         $("#qRedeem").click(function(){
@@ -438,7 +438,7 @@
         
         }); 
 
-        function capitalizeFirstLetter(string) 
+        function capitalizeFirstLetter(string)
         {
             return string.charAt(0).toUpperCase() + string.slice(1);
         };           

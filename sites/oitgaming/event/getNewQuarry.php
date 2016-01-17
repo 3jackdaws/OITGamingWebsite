@@ -1,27 +1,42 @@
 <?php
 	include_once("/var/www/php/sql_connect.php");
+	include_once("/var/www/web_classes/DHunter.php");
 	sleep(1);
 	$token = $_POST["token"];
 	$enteredHID = $_POST["quarry"];
 	
-	$uid = getUserIDFromToken($token);
+	$user = new DHunter($token);
 
-	$stats = getHunterStats($uid);
-
-	$assignedQuarry = $stats[5];
-	$hid = $stats[3];
-
-	if($enteredHID === $assignedQuarry)
+	if($enteredHID === "NEW")
 	{
-		echo "Contract Redeemed";
-		incrementPoints($uid);
-		eliminatePlayer($assignedQuarry, $hid);
-		getNewQuarry($uid);
+		$timeTil = $user->requestNewQuarry();
+		if($timeTil === true)
+		{
+			echo "TRUE";
+		}
+		else
+		{
+			echo $timeTil;
+		}
 	}
 	else
 	{
-		echo "That is not the ID of your target";
+		$assignedQuarry = $user->Quarry();
+
+		if($enteredHID === $assignedQuarry)
+		{
+			echo "Contract Redeemed";
+			$user->IncrementPoints();
+			$user->getQuarry();
+			$user->pushQuarry();
+			addToGameLog($user->HID(), $assignedQuarry);
+		}
+		else
+		{
+			echo "That is not the ID of your target";
+		}
 	}
+	
 	
 	
 

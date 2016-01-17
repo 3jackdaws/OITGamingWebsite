@@ -53,5 +53,62 @@
 			return true;
 		}
 
+		public function SetToRoundZero()
+		{
+			try{
+				$this->db_connection->SQLPrepare("UPDATE hunters SET eliminated = NULL, assignedQuarry = NULL, points = NULL;");
+			
+				$this->db_connection->SQLGetResult();
+			}
+			catch(Exception $e){
+				return false;
+			}
+			return true;
+		}
+
+		public function setToRoundOne()
+		{
+			try{
+				$this->db_connection->SQLPrepare("SELECT hunterID FROM hunters WHERE 1=1;");
+			
+				var_dump($this->db_connection->SQLGetResult());
+			}
+			catch(Exception $e){
+				echo $e->getMessage();
+			}
+			var_dump($HIDs);
+			$listOfQuarries = $HIDs;
+			$arraysMatch = true;
+
+			while(!$arraysMatch)
+			{
+				shuffle($listOfQuarries);
+				$arraysMatch = true;
+				for ($i=0; $i < count($listOfQuarries); $i++) { 
+					if($HIDs[$i] === $listOfQuarries[$i])
+					{
+						$arraysMatch = false;
+						break;
+					}
+				}
+
+			}
+			var_dump($listOfQuarries);
+			$this->db_connection->SQLPrepare("UPDATE hunters SET assignedQuarry = ? WHERE hunterID = ?;");
+			for ($i=0; $i < count($HIDs); $i++) { 
+				try{
+					$args = array($listOfQuarries[$i], $HIDs[$i]);
+					$this->db_connection->SQLBind("ss", $args);
+					$this->db_connection->SQLGetResult();
+				}
+			 	catch(Exception $e){
+			 		error_log($e);
+			 	}
+			 }
+			
+			return "Set to round 1";
+		}
+
+
 	}
 ?>

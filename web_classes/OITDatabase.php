@@ -8,7 +8,7 @@
 		private $db_name = "oitgaming";
 		private $db_user = SQL_USER;
 		private $db_pass = SQL_PASS;
-		public $db_connection = NULL;
+		private $db_connection = NULL;
 		private $db_bind_param_num = 0;
 		private $db_prepared_stmt;
 
@@ -99,5 +99,44 @@
     		$row = mysqli_fetch_row($result);
     		return $row;
 		}
+
+		public function SQLGetList()
+		{
+			if(!$this->db_prepared_stmt->execute())
+			{
+				throw new Exception("OITDatabase error: SQLExecute error");
+			}
+			$result = $this->db_prepared_stmt->get_result();
+    		$row = mysqli_fetch_all($result);
+    		return $row;
+		}
+
+		public function SQLFetchAll($column, $table)
+		{
+			$query = "SELECT " . $column. " FROM " . $table . ";";
+			$stmt = $this->db_connection->prepare($query);
+			if(!$stmt->execute())
+			{
+				throw new Exception("OITDatabase error: SQLExecute error");
+			}
+			$result = $stmt->get_result();
+    		$row = mysqli_fetch_all($result);
+    		$return = [];
+    		foreach ($row as $nestArray) {
+    			$return[ ] = $nestArray[0];
+    		}
+    		return $return;
+
+		}
+
+
+		public function ExposeDB()
+		{
+			return $this->db_connection;
+		}
+
+
+
+
 	}
 ?>
