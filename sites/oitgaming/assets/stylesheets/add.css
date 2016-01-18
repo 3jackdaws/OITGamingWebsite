@@ -51,3 +51,57 @@
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
 }
+.prefooter{
+    /*position: absolute;*/
+    /*left: 0;*/
+    margin: 0px;
+    background-color: #337ab7; 
+    color: white; 
+    width: 100%;
+    padding: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.prefooter a{
+    color: white;
+    
+}
+
+.flip {
+    -webkit-perspective: 800;
+    perspective: 800;
+
+    position: relative;
+    text-align: center;
+}
+.flip .card.flipped {
+    -webkit-transform: rotatey(-180deg);
+    transform: rotatey(-180deg);
+}
+.flip .card {
+
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: 0.5s;
+    transform-style: preserve-3d;
+    transition: 0.5s;
+}
+.flip .card .face {
+
+    -webkit-backface-visibility: hidden ;
+    backface-visibility: hidden ;
+    z-index: 2;
+   
+}
+.flip .card .front {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+}
+.flip .card .back {
+    -webkit-transform: rotatey(-180deg);
+    transform: rotatey(-180deg);
+}
+.inner{margin:0px auto auto auto !important;}

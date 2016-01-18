@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="theme-color" content="#2196F3">
+        <meta name="theme-color" content="#337ab7">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <meta name="keywords" content="oregon tech gaming community">
@@ -10,11 +10,11 @@
                         <meta name="author" content="Ian Murphy">
                             <link rel="icon" href="/assets/media/cog128.png">
                                 
-                                <title>My Account</title>
+                                <title>Assassin Leaderboard</title>
                                 
                                 <!-- Bootstrap core CSS -->
                                 <link href="/assets/stylesheets/bootstrap.min.css" rel="stylesheet">
-                                
+                                <link href="/assets/stylesheets/add.css" rel="stylesheet">
                                     
                                     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
                                     <!--[if lt IE 9]>
@@ -44,11 +44,11 @@
         background-color: #FCFCFC;
         border: 1px solid lightgrey;
         border-radius: 3px;
-        margin-top: 5%;
-        margin-bottom: 5%;
+        margin-top: 5px;
+        margin-bottom: 2%;
         margin-right: auto;
         margin-left: auto;
-        box-shadow: 0px 2px 7px 2px lightgrey;
+        /*box-shadow: 0px 2px 7px 2px lightgrey;*/
         
     }
         
@@ -67,8 +67,9 @@
         /*display: flex;
         align-items: center;*/
         /*text-align: center;*/
-        width: 90%;
-        max-width: 700px;
+        padding: 5px;
+        width: 95%;
+        max-width: 500px;
         background-color: #FCFCFC;
         border: 1px solid lightgrey;
         border-radius: 3px;
@@ -76,15 +77,15 @@
         margin-bottom: 5px;
         margin-right: auto;
         margin-left: auto;
-        box-shadow: 0px 2px 7px 2px lightgrey;
+        /*box-shadow: 0px 2px 7px 2px lightgrey;*/
     }
 
     .lb-image{
-        width: 230px;
+        width: 150px;
         display: inline-block;
         
         margin: auto;
-        margin-top: 2%;
+        margin-top: 5%;
         margin-bottom: 2%;
         
     }
@@ -101,10 +102,10 @@
     </style>
     <!-- NAVBAR================================================== -->
     <body>
-   
-    <br />
+   <div id="adjust"><br></div>
+    
     <div class="container">
-        <nav class="navbar navbar-inverse">
+        <nav id="nav" class="navbar navbar-inverse ">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -112,7 +113,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">My Profile</a>
+                <a class="navbar-brand" href="#">Assassin Leaderboard</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -137,10 +138,8 @@
     <!-- BODY CONTAINER -->
     <div id="fill" class="container">
         <div class="row">
-            <center>
-                <h1>Top Players</h1>
-            </center>
-            <div class="col-lg-4">
+        <div class="col-lg-6">
+            <h2><center>Top Players</center></h2><br>
                 <div class="leader" title="<?=$leaders[0]["firstName"]?>">
                     <div class="img-circle" style="max-height: 80vw; margin: 10px; height: 100px; width: 100px; float: left;overflow: hidden; background: url('<?=$leaders[0]["pictureDir"]?>') no-repeat; background-size: cover; background-position: center center"></div>
                     
@@ -151,8 +150,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
+            
+            <br>
+           
                 <div class="leader" title="<?=$leaders[1]["firstName"]?>">
                     <div class="img-circle" style="max-height: 80vw; margin: 10px; height: 100px; width: 100px; float: left;overflow: hidden; background: url('<?=$leaders[1]["pictureDir"]?>') no-repeat; background-size: cover; background-position: center center"></div>
                     <div class="l-image" style="width: 150px">  
@@ -162,8 +162,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4">
+            
+            <br>
+            
                 <div class="leader" title="<?=$leaders[2]["firstName"]?>">
                     <div class="img-circle" style="max-height: 80vw; margin: 10px; height: 100px; width: 100px; float: left;overflow: hidden; background: url('<?=$leaders[2]["pictureDir"]?>') no-repeat; background-size: cover; background-position: center center"></div>
                     <div class="l-image" style="width: 150px">  
@@ -174,72 +175,94 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <hr class="featurette-divider"/>
-    <br><br>
-    <?php
-        date_default_timezone_set('America/Los_Angeles');
-        foreach ($log as $row) {
 
-            $hunter = getQuarryStats($row["HID"]);
-            $quarry = getQuarryStats($row["Redeemed"]);
-            $time = $row["time"];
+
+
+            
         
-            $time = strtotime($time);
-            $time -= 3*60*60;
-            $time = "On " . date("D, M j, h:i a", $time);
-           
-            ?>
+        <div class="col-lg-6">
+            <h2><center>Combat Log</center></h2>
+            <br>
+            <?php
+            date_default_timezone_set('America/Los_Angeles');
+            foreach ($log as $row) {
+
+                $hunter = getQuarryStats($row["HID"]);
+                $quarry = getQuarryStats($row["Redeemed"]);
+                $time = $row["time"];
+            
+                $time = strtotime($time);
+                $time -= 3*60*60;
+                $time = "On " . date("D, M j, h:i a", $time);
+               
+                ?>
 
 
             <div class="logbox">
                 <div class="row">
-                    <div class="col-lg-6">
+                    <div class="col-lg-4">
                     <center>
                         <div class="lb-image">
 
-                            <div class="img-circle" style="max-height: 80vw; margin: 5px; height: 70px; width: 70px; float: left;overflow: hidden; background: url('<?=$hunter[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
+                            <div class="img-circle" style="max-height: 80vw; margin: 5px; height: 40px; width: 40px; float: left;overflow: hidden; background: url('<?=$hunter[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
                         
-                            <div class="glyphicon glyphicon-arrow-right" style="font-size: 1.5em; color: #AC2729; margin-top: 30px;"></div>
+                            <div class="glyphicon glyphicon-arrow-right" style="font-size: 1.5em; color: #AC2729; margin-top: 15px;"></div>
                         
-                            <div class="img-circle" style="max-height: 80vw; margin: 5px;height: 70px; width: 70px; float: right;overflow: hidden; background: url('<?=$quarry[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
+                            <div class="img-circle" style="max-height: 80vw; margin: 5px;height: 40px; width: 40px; float: right;overflow: hidden; background: url('<?=$quarry[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
                         </div>
                     </center>
                     </div>
-                    <div class="col-lg-6" style="margin-top: auto; margin-bottom: auto;">
+                    <div class="col-lg-8" style="margin-top: auto; margin-bottom: auto;">
                         
-                            <center><h2 ><?=$hunter[2]?> redeemed a contract on <?=$quarry[2]?></h3></center>
+                            <center><h4 ><?=$hunter[2]?> redeemed a contract on <?=$quarry[2]?></h3>
+                            <h6 style="color: #BBB; margin: 0;"><?=$time?></h6></center>
                       
                     </div>
                 </div>
                
                 
             </div>
-            <center><h6 style="color: #BBB; margin: 0;"><?=$time?></h6></center>
-            <br>
+            
+            
 
 
 
-            <?php
-        }
-    ?>
-    <hr class="featurette-divider" >
-    <footer id="footer" style="margin: 10px 10px 10px 10px;">
+                <?php
+            }
+        ?>
+        </div>
+            
+        </div>
+    </div>
+        </div>
+        
+            
+    <hr class="featurette-divider"/>
+    <br><br>
+    
+    
     <?php
         include("/var/www/snippets/standard_footer.php");
     ?>
-    </footer>
-        
-        
-
-        
         <!-- Bootstrap core JavaScript
          ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script>
+
+        $(document).ready(function()
+        {       
+   
+            if( $(window).width() < 1000)
+            {
+                $("#nav").toggleClass("navbar-fixed-top");
+                $("#adjust").html("<br><br><br>");
+            }
+            
+            // getUser();     
+        }); 
+
         $('#bFlip').click(function(){
             $("#quarry").toggleClass('flipped');
 

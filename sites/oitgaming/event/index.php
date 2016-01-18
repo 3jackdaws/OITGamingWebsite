@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="theme-color" content="#2196F3">
+        <meta name="theme-color" content="#337ab7">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <meta name="keywords" content="oregon tech gaming community">
@@ -10,11 +10,11 @@
                         <meta name="author" content="Ian Murphy">
                             <link rel="icon" href="/assets/media/cog128.png">
                                 
-                                <title>My Account</title>
+                                <title>Event Standings</title>
                                 
                                 <!-- Bootstrap core CSS -->
                                 <link href="/assets/stylesheets/bootstrap.min.css" rel="stylesheet">
-                                
+                                <link href="/assets/stylesheets/add.css" rel="stylesheet">
                                     
                                     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
                                     <!--[if lt IE 9]>
@@ -84,46 +84,8 @@
             min-height: 400px;
             box-shadow: 0px 2px 7px 2px lightgrey;
             overflow:hidden;
-            
-
         }
-        .flip {
-            -webkit-perspective: 800;
-            perspective: 800;
-
-            position: relative;
-            text-align: center;
-        }
-        .flip .card.flipped {
-            -webkit-transform: rotatey(-180deg);
-            transform: rotatey(-180deg);
-        }
-        .flip .card {
-
-            height: 100%;
-            -webkit-transform-style: preserve-3d;
-            -webkit-transition: 0.5s;
-            transform-style: preserve-3d;
-            transition: 0.5s;
-        }
-        .flip .card .face {
-
-            -webkit-backface-visibility: hidden ;
-            backface-visibility: hidden ;
-            z-index: 2;
-           
-        }
-        .flip .card .front {
-            position: absolute;
-            width: 100%;
-            z-index: 1;
-
-        }
-        .flip .card .back {
-            -webkit-transform: rotatey(-180deg);
-            transform: rotatey(-180deg);
-        }
-        .inner{margin:0px auto auto auto !important;}
+        
 
         .glyphicon-refresh-animate {
                     -animation: spin .7s infinite linear;
@@ -154,18 +116,15 @@
             text-align: left;
             padding-left: 2%;*/
         }
-        .xflex{
-            display: flex;
-            align-items: center;
-        }
+        
 
     </style>
     <!-- NAVBAR================================================== -->
     <body>
    
-    <br />
+    <div id="adjust"><br></div>
     <div class="container">
-        <nav class="navbar navbar-inverse">
+        <nav id="nav" class="navbar navbar-inverse">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -245,8 +204,12 @@
                                             
                                         </div>
                                         
-                                        
-                                        <a href="javascript:void(0)" data-toggle="collapse" data-target="#img_new"><h6>Change Image</a>
+                                        <?php
+                                        if($hunter->Quarry() == NULL)
+                                        {
+                                            ?>
+
+                                            <a href="javascript:void(0)" data-toggle="collapse" data-target="#img_new"><h6>Change Image</a>
                                         <div id="picerr" style="color: red"><?=$img_text?></div>
                                         <div id="img_new" class="collapse" style="text-align: left; padding: 5%">
                                             
@@ -260,7 +223,12 @@
                                                 <button class="btn btn-default">Confirm Choice</button>
                                             </form>
                                         </div>
-                                        <br><br>
+
+
+                                            <?php
+                                        }
+                                        ?>
+                                        
                               
                                    
                                         <div class="" style="text-align: center; margin: 10%;">
@@ -281,15 +249,15 @@
                                                 
                                             </div>
                                         
-                                        <hr class="featurette-divider">
+                                        <!-- <hr class="featurette-divider">
                                             <div class="row">
                                                 <div class="left">Status</div>
                                                 <div class="right"><?=$elimBy?></div>
-                                            </div>     
+                                            </div>      -->
                                         </div>
                                         <br>
                                         <div>
-                                            <a href="">Problems?</a>
+                                            <a href="mailto:event-issues@oitgaming.com">Problems?</a>
                                         </div>
                                     </div>
                                 
@@ -303,7 +271,7 @@
                                 <div class="flip">
                                     <div id="quarry" class="card">
                                         <div class="face front">
-                                            <div id="qCard" class="inner jumbotron-vert" >
+                                            <div id="qCard" class="inner jumbotron-vert" style="height: 460px;">
                                                 <center>
                                                     
                                                     <div style="max-height: 80vw; height: 400px; width: 100%; overflow: hidden; background: url('<?=$quarry[4]?>') no-repeat; background-size: cover; background-position: center center">
@@ -324,13 +292,13 @@
                                             </div>
                                         </div>
                                         <div class="face back">
-                                            <div class=" jumbotron-vert" >
-                                            
+                                            <div class=" jumbotron-vert" style="height: 460px; padding-top: 100px;">
+                                                
                                                 <h1>Redeem:</h1>
                                                 
                                                 <center>
                                                 <form style="width: 40%">
-                                                    <label style="color: grey">Enter your quarry's 6 character ID and click submit.</label>
+                                                    <label style="color: grey">Enter your target's 4 character ID and click submit.</label>
                                                     <br><br>
                                                     <input id="qID" class="form-control" type='text' placeholder="Quarry ID">
                                                     <br>
@@ -341,7 +309,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <br><br><br>
+                                    <br>
                                     <button id="bFlip" class="btn btn-default">FLIP CARD</button>
                                     
                                 </div>
@@ -363,19 +331,18 @@
     ?>
     </div>
     
-    <div id="err" style="color:red; text-align: center; font-size: 3em">
+    <div id="err" style="color:red; text-align: center; font-size: 2em">
     </div>
     <!-- END JUMBOTRON AND SIGNUP FORM -->
             
             
     
 
-    <hr class="featurette-divider" >
-    <footer id="footer" style="margin: 10px 10px 10px 10px;">
+   
     <?php
         include("/var/www/snippets/event_footer.php");
     ?>
-    </footer>
+    
         
         
 
@@ -386,13 +353,25 @@
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/bootstrap.min.js"></script>
     <script>
+
+        $(document).ready(function()
+        {       
+   
+            if( $(window).width() < 1000)
+            {
+                $("#nav").toggleClass("navbar-fixed-top");
+                $("#adjust").html("<br><br><br>");
+            }
+            
+            // getUser();     
+        }); 
         $('#bFlip').click(function(){
             $("#quarry").toggleClass('flipped');
 
         });
 
         $('#newQuarry').click(function(){
-            if(confirm("You are about to request a new quarry.  Click OK to continue."))
+            if(confirm("Requesting a new contract will remove your current contract.  You can only request a new contract every 24 hours.  Click OK to continue with this request."))
             {
                 $.post("getNewQuarry.php", {token: "<?=$token?>", quarry: "NEW"}, function(data)
                 {
@@ -409,7 +388,7 @@
                         document.getElementById("err").innerHTML = data;
                     }
                     else{
-                        document.getElementById("err").innerHTML = "You must wait " + data + " more hours before requesting a new quarry";
+                        document.getElementById("err").innerHTML = "You must wait " + data + " more hours before requesting a new contract";
                     }
                 });
             }

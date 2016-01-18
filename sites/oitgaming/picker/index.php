@@ -12,8 +12,8 @@
                                 <title>Oregon Tech Gaming Community - oitgaming.com</title>
                                 
                                 <!-- Bootstrap core CSS -->
-                                <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-                                
+                                <link href="/assets/stylesheets/bootstrap.min.css" rel="stylesheet">
+                                <link href="/assets/stylesheets/add.css" rel="stylesheet">
                                     
                                     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
                                     <!--[if lt IE 9]>
@@ -174,12 +174,11 @@
             
 
           </div>
-        <hr class="featurette-divider" >
-    <footer style="margin: 10px 10px 10px 10px;">
+        
         <?php
             include("/var/www/snippets/standard_footer.php");
         ?>
-    </footer>
+  
 
         
         <!-- Bootstrap core JavaScript

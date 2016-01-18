@@ -1,15 +1,9 @@
-<?php
-if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
-    $redirect = "https://".$_SERVER['HTTP_HOST']."/".$_SERVER['REQUEST_URI'];
-    header("HTTP/1.1 301 Moved Permanently");
-    header("Location: $redirect");
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="theme-color" content="#2196F3">
+        <meta name="theme-color" content="#337ab7">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
                 <meta name="keywords" content="oregon tech gaming community">
@@ -82,16 +76,14 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
     </style>
     <!-- NAVBAR================================================== -->
     <body>
-    <script>
-
     
-    </script>
+    <div id="adjust"></div>
     <div id="announce" class="container-fluid paper-blue" style="color: white; font-size: 1.5em; text-align: center;">
             <?=$announcement?>
     </div>
-    <br />
+    <br>
     <div class="container">
-        <nav class="navbar navbar-inverse">
+        <nav id="nav" class="navbar navbar-inverse">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -102,22 +94,17 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
                 <a class="navbar-brand" href="#">OIT Gaming Community</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#events">Upcoming Events</a></li>
-                    <li><a href="#gotw">Game of the Week</a></li>
-                    <li><a href="/picker">GOTW Pool</a></li>
-                    <li><a href="mailto:gaming@oit.edu">Contact</a></li>
-                </ul>
+                
+                <?=include("/var/www/snippets/std_navlinks.php");?>
+               
                 <ul class="nav navbar-nav navbar-right">
                     <li id="ddown" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="c_th"> <span id="l_id">Log in</span> <span id="l_icon" class="glyphicon glyphicon-log-in"></span></span></a>
                         <ul id="perUsrInfo" class="dropdown-menu">
-                            <div  style="text-align:center; width: 200px; margin: 10px 30px 10px 30px">
+                            <div style="text-align:center; width: 200px; margin: 10px 30px 10px 30px; color: inherit">
                                 <?php
                                     include("/var/www/php/standard_login.php");
                                 ?>
-                            
                             <a href="/login">Register</a>
                             </div>
                         </ul>
@@ -218,21 +205,24 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
         <br>
         <br>
         <div id="gotw" class="jumbotron ">
-            <h1><center>Game of the Week</h1>
-            <h3>Every week, a new game is randomly selected from member suggestions.  Members play the game during the week and, come the Friday meeting, discuss their favorite aspects of it.</h3>
-            <br>
-            <center>
-                <form onkeypress="return event.keyCode != 13;" id="gs_form" class="form-inline pull-center" role="form"  >
-                    <div class="form-group ">
-                        <input type="text" class="form-control" id="gs" placeholder="Enter suggestion here">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-default" type="button" onclick="check()" >Submit Suggestion</button>
-                    </div>
-                    <br><br>
-                    <div id="gs_output" style="color: #2196F3; font-size: 1.5em"></div>
-                </form>
-            </center>  
+            <div class="container">
+                <h1><center>Game of the Week</h1>
+                <h3>Every week, a new game is randomly selected from member suggestions.  Members play the game during the week and, come the Friday meeting, discuss their favorite aspects of it.</h3>
+                <h5><center><a href="/picker">View all suggested games.</a><br>
+                <br>
+                <center>
+                    <form onkeypress="return event.keyCode != 13;" id="gs_form" class="form-inline pull-center" role="form"  >
+                        <div class="form-group ">
+                            <input type="text" class="form-control" id="gs" placeholder="Enter suggestion here">
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-default" type="button" onclick="check()" >Submit Suggestion</button>
+                        </div>
+                        <br><br>
+                        <div id="gs_output" style="color: #2196F3; font-size: 1.5em"></div>
+                    </form>
+                </center>  
+            </div>
         </div>
         <br>     
               
@@ -261,7 +251,6 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
     <br>
     <h1><center>Steam Group Members</center></h1>
     <div class="container-fluid steamMemberBar" id="memberlist">
-        <center>Populating...</center>
     
     </div>
     <div class="container">
@@ -285,12 +274,12 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
         </div> 
     </div>
 
-    <hr class="featurette-divider" >
-    <footer style="margin: 10px 10px 10px 10px;">
+
+    </div>
         <?php
             include("/var/www/snippets/standard_footer.php");
         ?>
-    </footer>
+    
         
         
 
@@ -305,12 +294,9 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
     <script>
         $(document).ready(function()
         {
-            $.post("/assets/php/members.php", {swag: "hi"}, function(data)
-                {
-                    document.getElementById("memberlist").innerHTML = data;
-                });
+            $("#memberlist").load("/assets/media/steam-group-cache.txt");
             
-            
+            $("#lnk-home").toggleClass("active");
                             
    
             if( $(window).width()> 1000)
@@ -319,6 +305,8 @@ if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
             }
             else
             {
+                $("#nav").toggleClass("navbar-fixed-top");
+                $("#adjust").html("<br><br>");
                 $("#cal").load("/assets/cal/mobile.txt");
             }
             getUser();     

@@ -80,12 +80,21 @@
 		public function requestNewQuarry()
 		{
 
-			if($this->assignedQuarry != NULL)
+			if(getEventStatus())
 			{
 				$since = time() - strtotime($this->since);
-				
+				error_log(time());
+				error_log(strtotime($this->since));
+				error_log($since);
+				error_log($since/3600);
 				
 				if($since/3600 > 24)
+				{
+					$this->getQuarry();
+					$this->pushQuarry();
+					return true;
+				}
+				else if($this->assignedQuarry == NULL)
 				{
 					$this->getQuarry();
 					$this->pushQuarry();
@@ -94,7 +103,7 @@
 				else
 				{
 					
-					return round($since/3600);
+					return 24 - round($since/3600);
 				}
 			}
 			else
@@ -134,19 +143,27 @@
 
 		public function ChangeAvatar($web_dir)
 		{
-			try{
+			if($this->assignedQuarry == NULL)
+			{
+				try{
 				$this->db->SQLPrepare("UPDATE hunters SET pictureDir = ? WHERE hunterID = ?;");
 				$args = array($web_dir, $this->hunterID);
 				$this->db->SQLBind("ss", $args);
 				$this->db->SQLGetResult();
+				}
+				catch(Exception $e){
+					error_log($e);
+					return "Error Setting Picture";
+				}
+				unlink("/var/www/sites/oitgaming" . $this->pictureDir);
+				$this->pictureDir = $web_dir;
+				return "Picture Successfully Updated";
 			}
-			catch(Exception $e){
-				error_log($e);
-				return "Error Setting Picture";
+			else
+			{
+				return "Your picture cannot be changed after the game has started.  If you truly need to change your picture, click on the 'Problems?' link below.";
 			}
-			unlink("/var/www/sites/oitgaming" . $this->pictureDir);
-			$this->pictureDir = $web_dir;
-			return "Picture Successfully Updated";
+			
 		}
 
 		public function IncrementPoints()
