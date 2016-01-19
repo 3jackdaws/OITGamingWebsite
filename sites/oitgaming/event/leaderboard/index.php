@@ -41,13 +41,14 @@
     .leader{
         width:300px;
         height: 120px;
-        background-color: #FCFCFC;
-        border: 1px solid lightgrey;
+        background-color: #222;
+        border: 1px solid #555;
         border-radius: 3px;
         margin-top: 5px;
         margin-bottom: 2%;
         margin-right: auto;
         margin-left: auto;
+        color: white;
         /*box-shadow: 0px 2px 7px 2px lightgrey;*/
         
     }
@@ -67,11 +68,12 @@
         /*display: flex;
         align-items: center;*/
         /*text-align: center;*/
+        color: white;
         padding: 5px;
         width: 95%;
         max-width: 500px;
-        background-color: #FCFCFC;
-        border: 1px solid lightgrey;
+        background-color: #222;
+        border: 1px solid #555;
         border-radius: 3px;
         margin-top: 5px;
         margin-bottom: 5px;
@@ -101,7 +103,7 @@
     }
     </style>
     <!-- NAVBAR================================================== -->
-    <body>
+    <body style="background-color: #333; color: white">
    <div id="adjust"><br></div>
     
     <div class="container">
@@ -206,7 +208,7 @@
 
                             <div class="img-circle" style="max-height: 80vw; margin: 5px; height: 40px; width: 40px; float: left;overflow: hidden; background: url('<?=$hunter[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
                         
-                            <div class="glyphicon glyphicon-arrow-right" style="font-size: 1.5em; color: #AC2729; margin-top: 15px;"></div>
+                            <div class="glyphicon glyphicon-arrow-right" style="font-size: 1.5em; color: #337ab7; margin-top: 15px;"></div>
                         
                             <div class="img-circle" style="max-height: 80vw; margin: 5px;height: 40px; width: 40px; float: right;overflow: hidden; background: url('<?=$quarry[4]?>') no-repeat; background-size: cover; background-position: center center"></div>
                         </div>
@@ -215,7 +217,7 @@
                     <div class="col-lg-8" style="margin-top: auto; margin-bottom: auto;">
                         
                             <center><h4 ><?=$hunter[2]?> redeemed a contract on <?=$quarry[2]?></h3>
-                            <h6 style="color: #BBB; margin: 0;"><?=$time?></h6></center>
+                            <h6 style="color: #666; margin: 0;"><?=$time?></h6></center>
                       
                     </div>
                 </div>
@@ -237,7 +239,7 @@
         </div>
         
             
-    <hr class="featurette-divider"/>
+    
     <br><br>
     
     

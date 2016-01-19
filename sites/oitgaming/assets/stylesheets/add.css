@@ -105,3 +105,12 @@
     transform: rotatey(-180deg);
 }
 .inner{margin:0px auto auto auto !important;}
+
+footer{
+    width: 100%; 
+    position: absolute; 
+    left: 0; 
+    padding: 20px; 
+    color: white; 
+    background-color: #222;
+}

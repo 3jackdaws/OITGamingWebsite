@@ -342,10 +342,6 @@
     <?php
         include("/var/www/snippets/event_footer.php");
     ?>
-    
-        
-        
-
         
         <!-- Bootstrap core JavaScript
          ================================================== -->
