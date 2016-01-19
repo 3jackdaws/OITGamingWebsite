@@ -94,14 +94,14 @@
                 <a class="navbar-brand" href="#">OIT Gaming Community</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                
-                <?=include("/var/www/snippets/std_navlinks.php");?>
-               
+                <?php
+                    include("/var/www/snippets/std_navlinks.php");
+                ?>
                 <ul class="nav navbar-nav navbar-right">
                     <li id="ddown" class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="c_th"> <span id="l_id">Log in</span> <span id="l_icon" class="glyphicon glyphicon-log-in"></span></span></a>
                         <ul id="perUsrInfo" class="dropdown-menu">
-                            <div style="text-align:center; width: 200px; margin: 10px 30px 10px 30px; color: inherit">
+                            <div style="width: 300px; margin: 0 auto; padding: 5%;color: inherit">
                                 <?php
                                     include("/var/www/php/standard_login.php");
                                 ?>

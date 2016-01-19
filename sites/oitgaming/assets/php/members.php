@@ -1,12 +1,12 @@
 
 <?php
 
-$url = 'http://steamcommunity.com/groups/OITGC/memberslistxml/?xml=1';
+	$url = 'http://steamcommunity.com/groups/OITGC/memberslistxml/?xml=1';
 	#$url = "http://steamcommunity.com/groups/Valve/memberslistxml/?xml=1";
 	$content = file_get_contents($url);
 	$xml=simplexml_load_string($content) or die("Error: Cannot create object");
 	$mem = $xml->members->steamID64;
-	//print_r($xml->members->steamID64);
+	
 	$i;
 
 

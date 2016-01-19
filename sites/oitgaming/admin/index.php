@@ -59,8 +59,8 @@
                     <li class="active"><a href="../">Home</a></li>
                     <li><a href="../#events">Upcoming Events</a></li>
                     <li><a href="../#gotw">Game of the Week</a></li>
-                    <li><a href="../picker">GOTW Pool</a></li>
-                    <li><a href="mailto:gaming@oit.edu">Contact</a></li>
+                    <li><a href="event.php">Event Control</a></li>
+                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right" >
                     <li >
